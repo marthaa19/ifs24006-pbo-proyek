@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Daftar Produk</title>
+    <!-- Bootstrap CSS (CDN for simplicity) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Daftar Barang</h2>
+            <div>
+                <a href="/" class="btn btn-secondary">Home</a>
+                <a href="/products/create" class="btn btn-primary">+ Tambah Barang</a>
+            </div>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+        <!-- Fitur Tampilan Chart Data -->
+        <div class="card mb-4">
+            <div class="card-header bg-white font-weight-bold">Statistik Stok Barang</div>
+            <div class="card-body">
+                <canvas id="productChart" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
+
+        <!-- Fitur Tampilan Daftar Data -->
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Gambar</th>
+                            <th>Nama</th>
+                            <th>Harga</th>
+                            <th>Stok</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="p, iter : ${products}">
+                            <td th:text="${iter.count}">1</td>
+                            <td>
+                                <img th:if="${p.imageUrl != null}" 
+                                     th:src="@{'/uploads/' + ${p.imageUrl}}" 
+                                     alt="img" style="width: 50px; height: 50px; object-fit: cover;" class="rounded">
+                                <span th:unless="${p.imageUrl != null}" class="text-muted small">No Img</span>
+                            </td>
+                            <td th:text="${p.name}">Nama</td>
+                            <td th:text="'Rp ' + ${#numbers.formatDecimal(p.price, 0, 'COMMA', 2, 'POINT')}">Rp 0</td>
+                            <td th:text="${p.stock}">0</td>
+                            <td>
+                                <a th:href="@{/products/detail/{id}(id=${p.id})}" class="btn btn-sm btn-info text-white">Detail</a>
+                                <a th:href="@{/products/edit/{id}(id=${p.id})}" class="btn btn-sm btn-warning text-white">Ubah</a>
+                                <a th:href="@{/products/delete/{id}(id=${p.id})}" 
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${products.empty}">
+                            <td colspan="6" class="text-center">Belum ada data barang.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Chart -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const labels = /*[[${chartLabels}]]*/ [];
+        const data = /*[[${chartData}]]*/ [];
+
+        const ctx = document.getElementById('productChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Jumlah Stok',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+        /*]]>*/
+    </script>
+</body>
+</html>

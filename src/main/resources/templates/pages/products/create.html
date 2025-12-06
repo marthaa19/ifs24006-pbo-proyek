@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tambah Produk</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5" style="max-width: 600px;">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Tambah Barang Baru</h4>
+            </div>
+            <div class="card-body">
+                <!-- Pastikan enctype multipart/form-data ada untuk upload gambar -->
+                <form th:action="@{/products/create}" th:object="${productForm}" method="post" enctype="multipart/form-data">
+                    
+                    <!-- Alert Error Global (Misal gagal upload) -->
+                    <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+                    </div>
+
+                    <!-- INPUT SKU (WAJIB) -->
+                    <div class="mb-3">
+                        <label class="form-label">Kode Barang (SKU) <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" th:field="*{sku}" placeholder="Contoh: LAP-HP-001">
+                        <small class="text-danger" th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}"></small>
+                    </div>
+
+                    <!-- INPUT NAME (WAJIB) -->
+                    <div class="mb-3">
+                        <label class="form-label">Nama Barang <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" th:field="*{name}" placeholder="Contoh: Laptop Gaming">
+                        <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+                    </div>
+
+                    <!-- INPUT CATEGORY (WAJIB) -->
+                    <div class="mb-3">
+                        <label class="form-label">Kategori <span class="text-danger">*</span></label>
+                        <select class="form-select" th:field="*{category}">
+                            <option value="" disabled selected>Pilih Kategori</option>
+                            <option value="Elektronik">Elektronik</option>
+                            <option value="Pakaian">Pakaian</option>
+                            <option value="Makanan">Makanan</option>
+                            <option value="Perabotan">Perabotan</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                        <small class="text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Harga (Rp) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" th:field="*{price}">
+                            <small class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Stok <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" th:field="*{stock}">
+                            <small class="text-danger" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Deskripsi</label>
+                        <textarea class="form-control" th:field="*{description}" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Gambar Barang</label>
+                        <input type="file" class="form-control" th:field="*{image}" accept="image/*">
+                        <small class="text-danger" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></small>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="/products" class="btn btn-secondary">Batal</a>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
