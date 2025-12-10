@@ -1,120 +1,280 @@
 <!DOCTYPE html>
-<html
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/base}"
->
-  <head>
-    <title>Masuk - Spring Boot Todolist</title>
-  </head>
-  <body>
-    <div layout:fragment="content" class="mt-5">
-      <form
-        th:action="@{/auth/login/post}"
-        method="post"
-        th:object="${loginForm}"
-      >
-        <div class="card mx-auto" style="max-width: 360px">
-          <div class="card-body">
-            <div>
-              <div class="text-center">
-                <img
-                  th:src="@{/assets/images/logo.png}"
-                  alt="Logo"
-                  width="64"
-                />
-                <hr />
-                <h5>Masuk</h5>
-                <span class="text-muted">
-                  Masuk menggunakan kredensial akun Anda untuk melanjutkan
-                </span>
-                <hr />
-              </div>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk / Daftar - Platform Penjualan</title>
+    
+    <style>
+        /* CSS Inline Lengkap */
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
 
-              <!-- Pesan Error Global -->
-              <div
-                th:if="${#fields.hasGlobalErrors()}"
-                class="alert alert-danger"
-              >
-                <th:block
-                  th:each="err : ${#fields.globalErrors()}"
-                  th:text="${err}"
-                ></th:block>
-              </div>
+        .login-background {
+            /* URL GAMBAR LATAR BELAKANG */
+            background-image: url('https://jejakpiknik.com/wp-content/uploads/2018/09/Mangga-Dua-Mall.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-              <!-- Alamat Email -->
-              <div class="form-group mb-3">
-                <label for="inputEmail">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="inputEmail"
-                  th:field="*{email}"
-                  th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
-                  autocomplete="email"
-                />
-                <div
-                  th:if="${#fields.hasErrors('email')}"
-                  class="invalid-feedback"
-                >
-                  <th:block
-                    th:each="err : ${#fields.errors('email')}"
-                    th:text="${err}"
-                  ></th:block>
-                </div>
-              </div>
+        /* 2. Style Header Utama (Tulisan MUJI) */
+        .main-header-text {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+        }
+        .main-header-text h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0px;
+            color: #ffffff; 
+        }
 
-              <!-- Kata Sandi -->
-              <div class="form-group mb-3">
-                <label for="inputPassword">Kata Sandi</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="inputPassword"
-                  th:field="*{password}"
-                  th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
-                  autocomplete="current-password"
-                />
-                <div
-                  th:if="${#fields.hasErrors('password')}"
-                  class="invalid-feedback"
-                >
-                  <th:block
-                    th:each="err : ${#fields.errors('password')}"
-                    th:text="${err}"
-                  ></th:block>
-                </div>
-              </div>
+        /* 3. Kontainer Kartu dan Transisi */
+        .card-wrapper {
+            max-width: 360px;
+            width: 100%;
+            height: 480px; 
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.45);
+        }
+        
+        .form-slider {
+            display: flex;
+            width: 200%; 
+            height: 100%;
+            transition: transform 0.4s ease-in-out;
+        }
 
-              <!-- Remember Me -->
-              <div class="form-group mb-3 form-check">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="optionRememberMe"
-                  th:field="*{rememberMe}"
-                />
-                <label class="form-check-label" for="optionRememberMe"
-                  >Ingat saya</label
-                >
-              </div>
+        .login-form, .register-form {
+            width: 50%;
+            padding: 30px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
 
-              <!-- Tombol Masuk -->
-              <div class="form-group mt-3 text-end">
-                <button type="submit" class="btn btn-primary btn-block">
-                  Masuk
-                </button>
-              </div>
+        /* 4. State Management (Checkbox Hack) */
+        #reg-toggle {
+            display: none;
+        }
 
-              <hr />
-              <p class="text-center">
-                Belum memiliki akun?
-                <a th:href="@{/auth/register}">Daftar</a>
-              </p>
-            </div>
-          </div>
+        #reg-toggle:checked ~ .card-wrapper .form-slider {
+            transform: translateX(-50%);
+        }
+        
+        /* 5. Style Form Elements */
+        .input-group input {
+            width: calc(100% - 40px);
+            padding: 10px 15px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            background-color: rgba(255, 255, 255, 0.75);
+            box-sizing: border-box;
+            outline: none;
+            color: #333;
+        }
+        .input-group {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .input-icon {
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            align-items: center;
+            color: #666;
+            cursor: pointer;
+        }
+
+        /* Tombol Gradient */
+        .btn-gradient {
+            background: linear-gradient(90deg, #ff9900, #ff0077, #8e44ad);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 20px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+
+        /* Links Daftar/Masuk */
+        .toggle-link-container {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        .toggle-link {
+            font-weight: bold;
+            color: #8e44ad;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 6. Info Tambahan (3 Kartu Bawah) */
+        .info-cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .info-card {
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(3px);
+            border-radius: 10px;
+            padding: 10px 15px;
+            text-align: center;
+            width: 100px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .info-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-background">
+        
+        <div class="main-header-text">
+            <h1>無印良品</h1>
+            <p style="font-size: 1rem;">Platform Terpercaya 🔥</p>
+            <p style="font-size: 0.9rem;">Salam Penjualan</p>
+            <span style="font-size: 0.8rem;">Kelola Penjualan Anda dengan mudah</span>
         </div>
-      </form>
+
+        <input type="checkbox" id="reg-toggle">
+
+        <div class="card-wrapper">
+            
+            <div class="form-slider">
+
+                <form class="login-form" action="/auth/login/post" method="post">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h4 style="margin: 0; color: #333;">Selamat Datang Kembali!</h4>
+                        <span style="font-size: 0.9rem; color: #666;">Masuk untuk memulai berjualan</span>
+                    </div>
+
+                    <div class="input-group" style="flex-direction: column;">
+                        <label for="inputEmail">Alamat Email</label>
+                        <input type="email" id="inputEmail" name="email" placeholder="contoh@email.com" required style="width: 100%; border-radius: 8px;">
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="inputPassword">Kata Sandi</label>
+                        <div class="input-group">
+                            <input type="password" id="inputPassword" name="password" required>
+                            <span class="input-icon" style="border-radius: 0 8px 8px 0;">&#x1F441;</span> 
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.9rem;">
+                        <label style="display: flex; align-items: center; cursor: pointer; color: #333;">
+                            <input type="checkbox" name="rememberMe" style="margin-right: 5px;">
+                            Ingat saya
+                        </label>
+                        <a href="#" style="color: #8e44ad; text-decoration: none;">Lupa sandi?</a>
+                    </div>
+
+                    <button type="submit" class="btn-gradient">
+                        Masuk Sekarang
+                    </button>
+
+                    <div class="toggle-link-container">
+                        Belum punya akun? 
+                        <label for="reg-toggle" class="toggle-link">Daftar Gratis</label>
+                    </div>
+                </form>
+                
+                <form class="register-form" action="/auth/register/post" method="post">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h4 style="margin: 0; color: #333;">Ayo Mulai Berjualan!</h4>
+                        <span style="font-size: 0.9rem; color: #666;">Daftar untuk membuat akun baru</span>
+                    </div>
+
+                    <div class="input-group" style="flex-direction: column;">
+                        <label for="inputName">Nama Lengkap</label>
+                        <input type="text" id="inputName" name="fullName" placeholder="Nama Anda" required style="width: 100%; border-radius: 8px;">
+                    </div>
+
+                    <div class="input-group" style="flex-direction: column;">
+                        <label for="inputRegEmail">Email</label>
+                        <input type="email" id="inputRegEmail" name="email" placeholder="Email Anda" required style="width: 100%; border-radius: 8px;">
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="inputRegPassword">Buat Kata Sandi</label>
+                        <div class="input-group">
+                            <input type="password" id="inputRegPassword" name="password" required>
+                            <span class="input-icon" style="border-radius: 0 8px 8px 0;">&#x1F441;</span> 
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="inputConfirmPassword">Konfirmasi Sandi</label>
+                        <div class="input-group">
+                            <input type="password" id="inputConfirmPassword" name="confirmPassword" required>
+                            <span class="input-icon" style="border-radius: 0 8px 8px 0;">&#x1F441;</span> 
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-gradient">
+                        Daftar Akun
+                    </button>
+
+                    <div class="toggle-link-container">
+                        Sudah punya akun? 
+                        <label for="reg-toggle" class="toggle-link">Masuk</label>
+                    </div>
+                </form>
+
+            </div> </div> <div class="info-cards-container">
+            <div class="info-card">
+                <span class="icon">&#x1F44D;</span> 
+                <div>Mudah</div>
+            </div>
+            <div class="info-card">
+                <span class="icon">&#x26A1;</span> 
+                <div>Cepat</div>
+            </div>
+            <div class="info-card">
+                <span class="icon">&#x1F512;</span> 
+                <div>Aman</div>
+            </div>
+        </div>
     </div>
-  </body>
+</body>
 </html>

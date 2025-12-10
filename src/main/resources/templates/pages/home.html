@@ -2,75 +2,216 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Dashboard - Sistem Penjualan</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome untuk Ikon -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts (Poppins & Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            --info-gradient: linear-gradient(135deg, #0EA5E9 0%, #2563EB 100%);
+            --success-gradient: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            --warning-gradient: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            --surface-color: #ffffff;
+            --bg-color: #F3F4F6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: #1f2937;
+        }
+
+        h1, h2, h3, h4, h5, h6, .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Navbar Modernization */
+        .navbar {
+            background-color: var(--surface-color) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .navbar-brand {
+            color: #4F46E5 !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .navbar-brand::before {
+            content: "\f201"; /* FontAwesome chart icon */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-greeting {
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        /* Cards Modernization */
+        .card {
+            border: none;
+            border-radius: 16px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .bg-gradient-info { background: var(--info-gradient); }
+        .bg-gradient-success { background: var(--success-gradient); }
+        .bg-gradient-warning { background: var(--warning-gradient); }
+
+        .stat-icon-wrapper {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Action Card */
+        .action-card {
+            background: var(--surface-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-modern {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary-modern {
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+        }
+        
+        .btn-primary-modern:hover {
+            opacity: 0.9;
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-outline-modern {
+            border: 2px solid #4F46E5;
+            color: #4F46E5;
+            background: transparent;
+        }
+
+        .btn-outline-modern:hover {
+            background-color: #EEF2FF;
+            color: #4338ca;
+        }
+        
+        .welcome-text h3 {
+            font-weight: 700;
+            color: #111827;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <nav class="navbar navbar-expand-lg mb-5 sticky-top">
         <div class="container">
             <a class="navbar-brand" href="/">Sistem Penjualan</a>
-            <div class="d-flex">
-                <span class="navbar-text text-white me-3" th:if="${user != null}">
-                    Halo, <span th:text="${user.name}">User</span>
+            <div class="d-flex align-items-center gap-3">
+                <span class="user-greeting d-none d-md-block" th:if="${user != null}">
+                    Halo, <span class="fw-bold text-dark" th:text="${user.name}">User</span>
                 </span>
-                <a href="/auth/logout" class="btn btn-danger btn-sm">Logout</a>
+                <a href="/auth/logout" class="btn btn-danger btn-sm rounded-pill px-3 fw-bold">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </a>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <div class="row mb-4">
+        <!-- Header Section -->
+        <div class="row mb-4 align-items-center welcome-text">
             <div class="col-12">
                 <h3>Dashboard Ringkasan</h3>
-                <p class="text-muted">Selamat datang di panel kontrol stok barang Anda.</p>
+                <p class="text-muted">Pantau performa stok dan aset Anda secara real-time.</p>
             </div>
         </div>
 
         <!-- Kartu Statistik -->
-        <div class="row">
+        <div class="row g-4">
             <!-- Total Jenis Barang -->
-            <div class="col-md-4 mb-3">
-                <div class="card text-white bg-info shadow h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
+            <div class="col-md-4">
+                <div class="card stat-card bg-gradient-info text-white h-100 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h6 class="card-title">Jenis Barang</h6>
-                                <h2 class="fw-bold" th:text="${totalProducts}">0</h2>
+                                <h6 class="text-white-50 text-uppercase fw-bold small ls-1">Jenis Barang</h6>
+                                <h2 class="fw-bold display-5 mt-2 mb-0" th:text="${totalProducts}">0</h2>
                             </div>
-                            <i class="fas fa-box-open fa-3x opacity-50"></i>
+                            <div class="stat-icon-wrapper">
+                                <i class="fas fa-box-open fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-white-50"><i class="fas fa-arrow-up me-1"></i> Data terupdate</small>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Total Stok Fisik -->
-            <div class="col-md-4 mb-3">
-                <div class="card text-white bg-success shadow h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
+            <div class="col-md-4">
+                <div class="card stat-card bg-gradient-success text-white h-100 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h6 class="card-title">Total Stok Fisik</h6>
-                                <h2 class="fw-bold" th:text="${totalStock}">0</h2>
+                                <h6 class="text-white-50 text-uppercase fw-bold small ls-1">Total Stok Fisik</h6>
+                                <h2 class="fw-bold display-5 mt-2 mb-0" th:text="${totalStock}">0</h2>
                             </div>
-                            <i class="fas fa-layer-group fa-3x opacity-50"></i>
+                            <div class="stat-icon-wrapper">
+                                <i class="fas fa-cubes fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-white-50"><i class="fas fa-check-circle me-1"></i> Stok tersedia</small>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Nilai Aset -->
-            <div class="col-md-4 mb-3">
-                <div class="card text-white bg-warning shadow h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
+            <div class="col-md-4">
+                <div class="card stat-card bg-gradient-warning text-white h-100 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h6 class="card-title">Estimasi Nilai Aset</h6>
-                                <h3 class="fw-bold" th:text="'Rp ' + ${#numbers.formatDecimal(totalAssetValue, 0, 'COMMA', 0, 'POINT')}">Rp 0</h3>
+                                <h6 class="text-white-50 text-uppercase fw-bold small ls-1">Estimasi Aset</h6>
+                                <h3 class="fw-bold display-6 mt-2 mb-0" th:text="'Rp ' + ${#numbers.formatDecimal(totalAssetValue, 0, 'COMMA', 0, 'POINT')}">Rp 0</h3>
                             </div>
-                            <i class="fas fa-coins fa-3x opacity-50"></i>
+                            <div class="stat-icon-wrapper">
+                                <i class="fas fa-wallet fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-white-50"><i class="fas fa-chart-line me-1"></i> Valuasi saat ini</small>
                         </div>
                     </div>
                 </div>
@@ -78,24 +219,29 @@
         </div>
 
         <!-- Menu Cepat -->
-        <div class="row mt-4">
+        <div class="row mt-5">
             <div class="col-12">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Aksi Cepat</h5>
-                    </div>
-                    <div class="card-body">
-                        <a href="/products" class="btn btn-primary me-2">
-                            <i class="fas fa-list"></i> Lihat Daftar Barang
-                        </a>
-                        <a href="/products/create" class="btn btn-outline-primary">
-                            <i class="fas fa-plus"></i> Tambah Barang Baru
-                        </a>
+                <div class="card action-card p-4">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                        <div class="mb-3 mb-md-0">
+                            <h5 class="fw-bold mb-1">Aksi Cepat</h5>
+                            <p class="text-muted mb-0 small">Kelola inventaris Anda dengan pintasan ini.</p>
+                        </div>
+                        <div>
+                            <a href="/products" class="btn btn-modern btn-primary-modern me-2">
+                                <i class="fas fa-list me-2"></i> Lihat Daftar Barang
+                            </a>
+                            <a href="/products/create" class="btn btn-modern btn-outline-modern">
+                                <i class="fas fa-plus me-2"></i> Tambah Barang
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
