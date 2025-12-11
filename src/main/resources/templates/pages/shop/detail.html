@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detail Produk</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 th:text="${product.name}">Detail</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                     <img th:if="${product.imagePath}" th:src="@{'/uploads/' + ${product.imagePath}}" class="img-fluid rounded">
+                     <div th:unless="${product.imagePath}" class="alert alert-secondary">Tidak ada gambar</div>
+                </div>
+                <div class="col-md-8">
+                    <h4>Harga: <span th:text="'Rp ' + ${product.price}"></span></h4>
+                    <p>Stok Tersedia: <strong th:text="${product.stock}"></strong></p>
+                    <p th:text="${product.description}"></p>
+                    <hr>
+                    
+                    <!-- Fitur Beli (Kurangi Stok) -->
+                    <h5>Produk Terjual</h5>
+                    <form th:action="@{/shop/sales/create}" method="post" class="d-flex gap-2">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                        <input type="number" name="quantity" class="form-control w-25" placeholder="Jumlah" min="1" th:max="${product.stock}" required>
+                        <button type="submit" class="btn btn-success" th:disabled="${product.stock == 0}">Konfirmasi</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="/shop/products" class="btn btn-secondary">Kembali</a>
+        </div>
+    </div>
+</body>
+</html>

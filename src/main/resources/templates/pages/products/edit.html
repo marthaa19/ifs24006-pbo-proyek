@@ -2,75 +2,308 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Edit Produk</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .edit-container {
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .edit-image {
+            flex: 1;
+            background-image: url('https://down-vn.img.susercontent.com/file/cn-11134207-820l4-mensjr0nv1fq5d');
+            background-size: cover;
+            background-position: center;
+            min-height: 700px;
+            position: relative;
+            display: none;
+        }
+
+        .edit-form {
+            flex: 1;
+            padding: 50px 40px;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        .edit-form h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .edit-form .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .text-danger {
+            color: #dc3545;
+        }
+
+        .form-control, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            font-family: inherit;
+        }
+
+        .form-control:focus, .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .col-md-6 {
+            flex: 1;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .form-text {
+            color: #6c757d;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        /* Custom file input styling */
+        input[type="file"] {
+            padding: 10px;
+        }
+
+        input[type="file"]::file-selector-button {
+            padding: 8px 16px;
+            border: none;
+            background: #ffc107;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: #e0a800;
+        }
+
+        /* Scrollbar styling */
+        .edit-form::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .edit-form::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .edit-form::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .edit-form::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        @media (min-width: 992px) {
+            .edit-image {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .edit-form {
+                padding: 30px 25px;
+            }
+
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5" style="max-width: 600px;">
-        <div class="card shadow">
-            <div class="card-header bg-warning text-white">
-                <h4 class="mb-0">Ubah Data Barang</h4>
-            </div>
-            <div class="card-body">
-                <form th:action="@{/products/edit/{id}(id=${productId})}" th:object="${productForm}" method="post" enctype="multipart/form-data">
-                    
-                    <!-- INPUT SKU -->
-                    <div class="mb-3">
-                        <label class="form-label">Kode Barang (SKU)</label>
-                        <input type="text" class="form-control" th:field="*{sku}">
-                        <small class="text-danger" th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}"></small>
-                    </div>
+<body>
+    <div class="edit-container">
+        <div class="edit-image"></div>
+        
+        <div class="edit-form">
+            <h2>Ubah Data Photocard</h2>
+            <p class="subtitle">Perbarui informasi produk photocard yang sudah ada</p>
 
-                    <!-- INPUT NAME -->
-                    <div class="mb-3">
-                        <label class="form-label">Nama Barang</label>
-                        <input type="text" class="form-control" th:field="*{name}">
-                        <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
-                    </div>
+            <form th:action="@{/products/edit/{id}(id=${productId})}" th:object="${productForm}" method="post" enctype="multipart/form-data">
+                
+                <!-- Nama Grup (SKU) -->
+                <div class="form-group">
+                    <label class="form-label">Nama Grup <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" th:field="*{sku}" placeholder="Contoh: CORTIS">
+                    <small class="error-message" th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}"></small>
+                </div>
 
-                    <!-- INPUT CATEGORY -->
-                    <div class="mb-3">
-                        <label class="form-label">Kategori</label>
-                        <select class="form-select" th:field="*{category}">
-                            <option value="Elektronik">Elektronik</option>
-                            <option value="Pakaian">Pakaian</option>
-                            <option value="Makanan">Makanan</option>
-                            <option value="Perabotan">Perabotan</option>
-                            <option value="Lainnya">Lainnya</option>
-                        </select>
-                        <small class="text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></small>
-                    </div>
+                <!-- Nama Idol -->
+                <div class="form-group">
+                    <label class="form-label">Nama Idol <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" th:field="*{name}" placeholder="Contoh: Martin">
+                    <small class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+                </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Harga (Rp)</label>
-                            <input type="number" class="form-control" th:field="*{price}">
-                            <small class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></small>
+                <!-- Kategori -->
+                <div class="form-group">
+                    <label class="form-label">Kategori Card <span class="text-danger">*</span></label>
+                    <select class="form-select" th:field="*{category}">
+                        <option value="" disabled>Pilih Kategori</option>
+                        <option value="Photocard">Photocard (Official)</option>
+                        <option value="Limited Edition">Limited Edition</option>
+                        <option value="Signed Card">Signed Card</option>
+                        <option value="Trading Card">Trading Card</option>
+                        <option value="Polaroid">Polaroid</option>
+                        <option value="Hologram">Hologram Card</option>
+                    </select>
+                    <small class="error-message" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></small>
+                </div>
+
+                <!-- Harga & Stok -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Harga (Rp) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" th:field="*{price}" placeholder="50000">
+                            <small class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></small>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Stok</label>
-                            <input type="number" class="form-control" th:field="*{stock}">
-                            <small class="text-danger" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></small>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Stok <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" th:field="*{stock}" placeholder="10">
+                            <small class="error-message" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></small>
                         </div>
                     </div>
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Deskripsi</label>
-                        <textarea class="form-control" th:field="*{description}" rows="3"></textarea>
-                    </div>
+                <!-- Deskripsi -->
+                <div class="form-group">
+                    <label class="form-label">Deskripsi</label>
+                    <textarea class="form-control" th:field="*{description}" rows="3" placeholder="Deskripsi singkat tentang photocard..."></textarea>
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Ubah Gambar (Biarkan kosong jika tetap)</label>
-                        <input type="file" class="form-control" th:field="*{image}" accept="image/*">
-                        <div class="form-text">Mengupload gambar baru akan menggantikan gambar lama.</div>
-                        <small class="text-danger" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></small>
-                    </div>
+                <!-- Upload Gambar -->
+                <div class="form-group">
+                    <label class="form-label">Ubah Gambar Photocard</label>
+                    <input type="file" class="form-control" th:field="*{image}" accept="image/*">
+                    <span class="form-text">Biarkan kosong jika tidak ingin mengubah gambar. Upload gambar baru akan menggantikan yang lama.</span>
+                    <small class="error-message" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></small>
+                </div>
 
-                    <div class="d-flex justify-content-between">
-                        <a href="/products" class="btn btn-secondary">Batal</a>
-                        <button type="submit" class="btn btn-warning text-white">Simpan Perubahan</button>
-                    </div>
-                </form>
-            </div>
+                <!-- Tombol -->
+                <div class="button-group">
+                    <a href="/products" class="btn btn-secondary">Batal</a>
+                    <button type="submit" class="btn btn-warning">Simpan Perubahan</button>
+                </div>
+            </form>
         </div>
     </div>
 </body>
