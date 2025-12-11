@@ -1,44 +1,355 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Detail Produk</title>
+    <title>Detail Produk - Sistem Penjualan Photocard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            --success-gradient: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            min-height: 100vh;
+            position: relative;
+            background-image: url('https://i.ebayimg.com/images/g/izIAAeSwbkZowv4O/s-l400.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.75) 0%, rgba(167, 139, 250, 0.7) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .detail-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: none;
+        }
+
+        .image-section {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 500px;
+        }
+
+        .product-image {
+            max-height: 450px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .no-image {
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        .no-image i {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section {
+            padding: 3rem;
+        }
+
+        .product-title {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--success-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: #4F46E5;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-divider {
+            border: none;
+            height: 2px;
+            background: linear-gradient(to right, rgba(79, 70, 229, 0.2), rgba(79, 70, 229, 0), rgba(79, 70, 229, 0.2));
+            margin: 2rem 0;
+        }
+
+        .section-title {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: #4F46E5;
+        }
+
+        .description-text {
+            color: #4b5563;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            padding: 1rem;
+            background: rgba(249, 250, 251, 0.8);
+            border-radius: 12px;
+            border-left: 4px solid #4F46E5;
+        }
+
+        .timestamp-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(249, 250, 251, 0.8);
+            border-radius: 16px;
+        }
+
+        .timestamp-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .timestamp-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timestamp-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .timestamp-icon.created {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+        }
+
+        .timestamp-icon.updated {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            color: white;
+        }
+
+        .timestamp-content {
+            flex: 1;
+        }
+
+        .timestamp-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .timestamp-value {
+            font-size: 1.1rem;
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .btn {
+            border-radius: 12px;
+            padding: 0.875rem 1.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-outline-secondary {
+            border: 2px solid #6B7280;
+            color: #6B7280;
+        }
+
+        .btn-outline-secondary:hover {
+            background: #6B7280;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            border: none;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+        }
+
+        .action-buttons {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <div class="card shadow-lg">
+<body>
+    <div class="container mt-5 mb-5">
+        <div class="card detail-card shadow-lg">
             <div class="row g-0">
-                <div class="col-md-5 bg-white d-flex align-items-center justify-content-center p-4">
-                    <img th:if="${product.imageUrl != null}" 
-                         th:src="@{'/uploads/' + ${product.imageUrl}}" 
-                         class="img-fluid rounded" style="max-height: 400px;">
-                    <div th:unless="${product.imageUrl != null}" class="text-center text-muted">
-                        <h3>No Image Available</h3>
+                <!-- Image Section -->
+                <div class="col-md-5">
+                    <div class="image-section">
+                        <img th:if="${product.imageUrl != null}" 
+                             th:src="@{'/uploads/' + ${product.imageUrl}}" 
+                             class="img-fluid product-image"
+                             alt="Product Image">
+                        <div th:unless="${product.imageUrl != null}" class="no-image">
+                            <i class="fas fa-image"></i>
+                            <h4>Tidak Ada Gambar</h4>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Content Section -->
                 <div class="col-md-7">
-                    <div class="card-body p-4">
-                        <h2 class="card-title fw-bold" th:text="${product.name}">Nama Barang</h2>
-                        <h4 class="text-primary mb-3" th:text="'Rp ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}">Price</h4>
+                    <div class="content-section">
+                        <!-- Product Title -->
+                        <h2 class="product-title" th:text="${product.name}">Nama Photocard</h2>
                         
-                        <p class="card-text"><small class="text-muted">Stok Tersedia: <span th:text="${product.stock}"></span> unit</small></p>
-                        
-                        <hr>
-                        <h5>Deskripsi:</h5>
-                        <p class="card-text" th:text="${product.description ?: '-'}">Deskripsi...</p>
-                        
-                        <div class="mt-4">
-                            <a href="/products" class="btn btn-outline-secondary">Kembali</a>
-                            <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-warning text-white ms-2">Edit Barang</a>
+                        <!-- Product Price -->
+                        <div class="product-price" th:text="'Rp ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">
+                            Rp 0
                         </div>
                         
-                        <div class="mt-3 text-end">
-                            <small class="text-muted" th:text="'Diupdate: ' + ${#temporals.format(product.updatedAt, 'dd-MM-yyyy HH:mm')}"></small>
+                        <!-- Stock Badge -->
+                        <div class="info-badge">
+                            <i class="fas fa-box"></i>
+                            <span>Stok Tersedia: <strong th:text="${product.stock}">0</strong> unit</span>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="info-badge" style="background: rgba(245, 158, 11, 0.1); color: #D97706;">
+                            <i class="fas fa-tag"></i>
+                            <span>Kategori: <strong th:text="${product.category}">-</strong></span>
+                        </div>
+                        
+                        <hr class="section-divider">
+                        
+                        <!-- Description Section -->
+                        <h5 class="section-title">
+                            <i class="fas fa-align-left"></i>
+                            Deskripsi Produk
+                        </h5>
+                        <p class="description-text" th:text="${product.description != null && product.description != '' ? product.description : 'Tidak ada deskripsi'}">
+                            Deskripsi produk...
+                        </p>
+                        
+                        <!-- Timestamp Section -->
+                        <div class="timestamp-section">
+                            <h5 class="section-title">
+                                <i class="fas fa-clock"></i>
+                                Informasi Waktu
+                            </h5>
+                            
+                            <!-- Created At -->
+                            <div class="timestamp-item">
+                                <div class="timestamp-icon created">
+                                    <i class="fas fa-plus-circle"></i>
+                                </div>
+                                <div class="timestamp-content">
+                                    <div class="timestamp-label">Dibuat Pada</div>
+                                    <div class="timestamp-value" th:text="${product.createdAt != null ? #temporals.format(product.createdAt, 'dd MMMM yyyy, HH:mm:ss') : '-'}">
+                                        01 Januari 2024, 10:30:00
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Updated At -->
+                            <div class="timestamp-item">
+                                <div class="timestamp-icon updated">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="timestamp-content">
+                                    <div class="timestamp-label">Diupdate Pada</div>
+                                    <div class="timestamp-value" th:text="${product.updatedAt != null ? #temporals.format(product.updatedAt, 'dd MMMM yyyy, HH:mm:ss') : '-'}">
+                                        15 Januari 2024, 14:45:30
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <a href="/products" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Kembali
+                            </a>
+                            <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-warning">
+                                <i class="fas fa-edit me-2"></i>Edit Photocard
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

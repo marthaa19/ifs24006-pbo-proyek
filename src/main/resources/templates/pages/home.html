@@ -18,6 +18,8 @@
             --info-gradient: linear-gradient(135deg, #0EA5E9 0%, #2563EB 100%);
             --success-gradient: linear-gradient(135deg, #10B981 0%, #059669 100%);
             --warning-gradient: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            --danger-gradient: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            --purple-gradient: linear-gradient(135deg, #A855F7 0%, #9333EA 100%);
             --surface-color: #ffffff;
             --bg-color: #F3F4F6;
         }
@@ -43,7 +45,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(167, 139, 250, 0.3) 100%);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.75) 0%, rgba(167, 139, 250, 0.7) 100%);
             z-index: 0;
             pointer-events: none;
         }
@@ -61,68 +63,95 @@
         .navbar {
             background-color: rgba(255, 255, 255, 0.98) !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            padding-top: 1rem;
-            padding-bottom: 1rem;
+            padding-top: 1.2rem;
+            padding-bottom: 1.2rem;
         }
 
         .navbar-brand {
             color: #4F46E5 !important;
             font-weight: 700;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         
         .navbar-brand::before {
-            content: "\f201"; /* FontAwesome chart icon */
+            content: "\f201";
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
         }
 
         .user-greeting {
             color: #4b5563;
             font-weight: 500;
+            font-size: 1.05rem;
         }
 
-        /* Cards Modernization */
+        /* Cards Modernization - BIGGER */
         .card {
             border: none;
-            border-radius: 16px;
+            border-radius: 20px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             overflow: hidden;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 12px 12px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card .card-body {
+            padding: 2rem !important;
         }
 
         .bg-gradient-info { background: var(--info-gradient); }
         .bg-gradient-success { background: var(--success-gradient); }
         .bg-gradient-warning { background: var(--warning-gradient); }
+        .bg-gradient-danger { background: var(--danger-gradient); }
+        .bg-gradient-purple { background: var(--purple-gradient); }
 
         .stat-icon-wrapper {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 18px;
             backdrop-filter: blur(4px);
+        }
+
+        .stat-icon-wrapper i {
+            font-size: 2.5rem !important;
+        }
+
+        .stat-card h2 {
+            font-size: 3.5rem !important;
+        }
+
+        .stat-card h3 {
+            font-size: 2.2rem !important;
+        }
+
+        .stat-card h6 {
+            font-size: 0.95rem !important;
+            letter-spacing: 1px;
         }
 
         /* Action Card */
         .action-card {
             background: rgba(255, 255, 255, 0.98);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
         }
 
         .btn-modern {
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-weight: 500;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
             transition: all 0.2s;
+            font-size: 1.05rem;
         }
 
         .btn-primary-modern {
@@ -135,6 +164,7 @@
             opacity: 0.9;
             color: white;
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transform: translateY(-2px);
         }
 
         .btn-outline-modern {
@@ -144,20 +174,112 @@
         }
 
         .btn-outline-modern:hover {
-            background-color: #EEF2FF;
-            color: #4338ca;
+            background-color: #4F46E5;
+            color: white;
+            transform: translateY(-2px);
         }
         
         .welcome-text h3 {
             font-weight: 700;
             color: #1f2937;
             text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+            font-size: 2rem;
         }
         
         .welcome-text p {
             color: #374151;
             font-weight: 500;
             text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        /* New Features Section */
+        .feature-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            height: 100%;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            font-size: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon.blue {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            color: white;
+        }
+
+        .feature-icon.green {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+        }
+
+        .feature-icon.orange {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: white;
+        }
+
+        .feature-icon.red {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+        }
+        
+        .feature-card h5 {
+            color: #1f2937;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+        
+        .feature-card p {
+            color: #4B5563;
+            font-weight: 500;
+        }
+
+        .recent-activity {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .activity-item {
+            padding: 1rem;
+            border-left: 3px solid #4F46E5;
+            background: rgba(79, 70, 229, 0.05);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: rgba(79, 70, 229, 0.1);
+            transform: translateX(5px);
+        }
+
+        .activity-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .activity-time {
+            color: #6B7280;
+            font-size: 0.85rem;
         }
     </style>
 </head>
@@ -171,7 +293,7 @@
                 <span class="user-greeting d-none d-md-block" th:if="${user != null}">
                     Halo, <span class="fw-bold text-dark" th:text="${user.name}">User</span>
                 </span>
-                <a href="/auth/logout" class="btn btn-danger btn-sm rounded-pill px-3 fw-bold">
+                <a href="/auth/logout" class="btn btn-danger btn-sm rounded-pill px-4 py-2 fw-bold">
                     <i class="fas fa-sign-out-alt me-1"></i> Logout
                 </a>
             </div>
@@ -180,26 +302,26 @@
 
     <div class="container">
         <!-- Header Section -->
-        <div class="row mb-4 align-items-center welcome-text">
+        <div class="row mb-5 align-items-center welcome-text">
             <div class="col-12">
                 <h3>Dashboard Ringkasan</h3>
                 <p class="text-muted">Pantau stok dan nilai aset Anda secara real-time.</p>
             </div>
         </div>
 
-        <!-- Kartu Statistik -->
-        <div class="row g-4">
+        <!-- Kartu Statistik - BIGGER -->
+        <div class="row g-4 mb-5">
             <!-- Total Jenis Barang -->
-            <div class="col-md-4">
+            <div class="col-lg-3 col-md-6">
                 <div class="card stat-card bg-gradient-info text-white h-100 shadow-sm">
-                    <div class="card-body p-4">
+                    <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <h6 class="text-white-50 text-uppercase fw-bold small ls-1">Jenis Barang</h6>
-                                <h2 class="fw-bold display-5 mt-2 mb-0" th:text="${totalProducts}">0</h2>
+                                <h2 class="fw-bold mt-2 mb-0" th:text="${totalProducts}">0</h2>
                             </div>
                             <div class="stat-icon-wrapper">
-                                <i class="fas fa-box-open fa-2x"></i>
+                                <i class="fas fa-box-open"></i>
                             </div>
                         </div>
                         <div class="mt-3">
@@ -210,16 +332,16 @@
             </div>
 
             <!-- Total Stok Fisik -->
-            <div class="col-md-4">
+            <div class="col-lg-3 col-md-6">
                 <div class="card stat-card bg-gradient-success text-white h-100 shadow-sm">
-                    <div class="card-body p-4">
+                    <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h6 class="text-white-50 text-uppercase fw-bold small ls-1">Total Stok Pholaroid</h6>
-                                <h2 class="fw-bold display-5 mt-2 mb-0" th:text="${totalStock}">0</h2>
+                                <h6 class="text-white-50 text-uppercase fw-bold small ls-1">Total Stok</h6>
+                                <h2 class="fw-bold mt-2 mb-0" th:text="${totalStock}">0</h2>
                             </div>
                             <div class="stat-icon-wrapper">
-                                <i class="fas fa-cubes fa-2x"></i>
+                                <i class="fas fa-cubes"></i>
                             </div>
                         </div>
                         <div class="mt-3">
@@ -230,16 +352,16 @@
             </div>
 
             <!-- Nilai Aset -->
-            <div class="col-md-4">
+            <div class="col-lg-3 col-md-6">
                 <div class="card stat-card bg-gradient-warning text-white h-100 shadow-sm">
-                    <div class="card-body p-4">
+                    <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <h6 class="text-white-50 text-uppercase fw-bold small ls-1">Estimasi Aset</h6>
-                                <h3 class="fw-bold display-6 mt-2 mb-0" th:text="'Rp ' + ${#numbers.formatDecimal(totalAssetValue, 0, 'COMMA', 0, 'POINT')}">Rp 0</h3>
+                                <h3 class="fw-bold mt-2 mb-0" th:text="'Rp ' + ${#numbers.formatDecimal(totalAssetValue, 0, 'COMMA', 0, 'POINT')}">Rp 0</h3>
                             </div>
                             <div class="stat-icon-wrapper">
-                                <i class="fas fa-wallet fa-2x"></i>
+                                <i class="fas fa-wallet"></i>
                             </div>
                         </div>
                         <div class="mt-3">
@@ -248,10 +370,49 @@
                     </div>
                 </div>
             </div>
+
+
         </div>
 
+        <!-- Quick Features Section (NEW) -->
+        <div class="row g-4 mb-5">
+            <div class="col-12">
+                <h4 class="fw-bold mb-4 text-dark" style="text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);">
+                    <i class="fas fa-star me-2" style="color: #F59E0B;"></i>Fitur Utama
+                </h4>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon blue">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Cari Photocard</h5>
+                    <p class="text-muted mb-3 small">Temukan photocard dengan mudah berdasarkan nama, idol, atau kategori</p>
+                    <a href="/products" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                        Cari Sekarang <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon orange">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Laporan Stok</h5>
+                    <p class="text-muted mb-3 small">Lihat analisis stok dan performa penjualan photocard Anda</p>
+                    <a href="#" class="btn btn-sm btn-outline-warning rounded-pill px-3">
+                        Lihat Laporan <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+
+
         <!-- Menu Cepat -->
-        <div class="row mt-5">
+        <div class="row">
             <div class="col-12">
                 <div class="card action-card p-4">
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
@@ -259,12 +420,12 @@
                             <h5 class="fw-bold mb-1">Aksi Cepat</h5>
                             <p class="text-muted mb-0 small">Kelola inventaris Anda dengan pintasan ini.</p>
                         </div>
-                        <div>
-                            <a href="/products" class="btn btn-modern btn-primary-modern me-2">
-                                <i class="fas fa-list me-2"></i> Lihat Daftar Pholaroid
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="/products" class="btn btn-modern btn-primary-modern">
+                                <i class="fas fa-list me-2"></i> Lihat Daftar Photocard
                             </a>
                             <a href="/products/create" class="btn btn-modern btn-outline-modern">
-                                <i class="fas fa-plus me-2"></i> Tambah stock Pholaroid
+                                <i class="fas fa-plus me-2"></i> Tambah Stok Photocard
                             </a>
                         </div>
                     </div>
